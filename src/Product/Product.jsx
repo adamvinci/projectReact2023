@@ -48,7 +48,8 @@ const Product = ({ product }) => {
                                     </div>
                                     <div className="thumbnail text-center">
                                         {product.images.map((img, index) => (
-                                            <img key={index} onClick={(e) => changeImage(e.target)} src={`../src/img/${img}`} width="70" alt="Thumbnail 1" />
+                                            <img key={index} onClick={(e) =>
+                                                changeImage(e.target)} src={`../src/img/${img}`} width="70" alt="Thumbnail 1" />
                                         ))}
                                     </div>
                                 </div>
