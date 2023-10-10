@@ -44,11 +44,11 @@ const Product = ({ product }) => {
                             <div className="col-md-6">
                                 <div className="images p-3">
                                     <div className="text-center p-4">
-                                        <img id="main-image" src={`../src/img/${image}`} width="250" alt="Main" />
+                                        <img id="main-image" src={`./${image}`} width="250" alt="Main" />
                                     </div>
                                     <div className="thumbnail text-center">
                                         {product.images.map((img, index) => (
-                                            <img key={index} onClick={(e) => changeImage(e.target)} src={`../src/img/${img}`} width="70" alt="Thumbnail 1" />
+                                            <img key={index} onClick={(e) => changeImage(e.target)} src={`./${img}`} width="70" alt="Thumbnail 1" />
                                         ))}
                                     </div>
                                 </div>
