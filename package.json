@@ -1,11 +1,12 @@
 {
+  "homepage": "https://adamvinci.github.io/reactApp",
   "name": "routed-anecdotes",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build -b appreacttest",
+    "deploy": "gh-pages -d dist -b appreacttestdeploy",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
