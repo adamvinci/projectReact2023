@@ -30,7 +30,7 @@ const Cart = () => {
                             {cart.map((item, index) => (
                                 <tr key={index}>
                                     <td>
-                                        <img src={`./${item.images[0]}`} alt={item.name} width="100" height="100" />
+                                        <img src={`src/img/${item.images[0]}`} alt={item.name} width="100" height="100" />
                                     </td>
                                     <td>{item.name}</td>
                                     <td>{item.description}</td>
