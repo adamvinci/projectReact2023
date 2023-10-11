@@ -9,7 +9,9 @@ import Product from '../Product/Product'
 import Cart from '../Cart/Cart'
 import Header from '../Header/Header'
 import ProductList from "../ProductList/ProductList"
-
+import Payement from "../Stripe/Payement"
+import { Context as CartContext } from '../Context/CartContext'
+import { useContext } from "react"
 
 
 const App = () => {
@@ -88,6 +90,10 @@ const App = () => {
   const product = match
     ? products.find(note => note.id === Number(match.params.id))
     : null
+
+  const matchPayement = useMatch('/payement')
+  const { cart } = useContext(CartContext);
+  const price = matchPayement ? cart.reduce((total, product) => total + product.price, 0) : 0;
   return (
     <div>
       <div>
@@ -98,6 +104,7 @@ const App = () => {
           <Route path="/" element={<ProductList products={products} />} />
           <Route path="/products/:id" element={<Product product={product} />} />
           <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/payement" element={<Payement price={price} />}></Route>
         </Routes>
       </div>
       <Footer />

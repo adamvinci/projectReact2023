@@ -1,15 +1,61 @@
 import { Context as CartContext } from '../Context/CartContext'
 import { useContext } from "react"
 import React from "react";
-const Cart = () => {
+import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
-    const { cart } = useContext(CartContext)
+const Cart = () => {
+    const navigate = useNavigate();
+
+    const { cart, deleteCart } = useContext(CartContext);
+
+    const MySwal = withReactContent(Swal)
+
+    // search if url contains redirect_status (means that payment succeded or failed) then empty the cart and clear the url
+    const [searchParams, setSearchParams] = useSearchParams();
+    if (searchParams.has('redirect_status')) {
+        if (searchParams.get('redirect_status') === "succeeded") {
+            MySwal.fire({
+                title: 'Payment Accepted',
+                icon: 'success',
+                timer: 5000,
+            }).then(() => {
+                deleteCart();
+                setSearchParams([]);
+            });
+        } else {
+            MySwal.fire({
+                title: 'Payment Refused',
+                icon: 'error',
+                timer: 5000,
+            }).then(() => {
+                setSearchParams([]);
+            });
+
+        }
+    }
+
     const calculateTotalPrice = () => {
         let totalprice = 0;
         cart.map(product => {
             totalprice += product.price;
         })
         return totalprice;
+    }
+    const checkoutHandler = () => {
+        const price = calculateTotalPrice();
+        if (price == 0) {
+            MySwal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'You need to have products in your cart to proceed with the purchase',
+            });
+        } else {
+            navigate('/payement')
+        }
+
     }
     return (
         <div className="container">
@@ -46,7 +92,7 @@ const Cart = () => {
                     <div className="card">
                         <div className="card-body">
                             <h5 className="card-title">Total Price: ${calculateTotalPrice()}</h5>
-                            <a href="/checkout" className="btn btn-primary">Proceed to Checkout</a>
+                            <button onClick={checkoutHandler} className="btn btn-primary">Proceed to Checkout</button>
                         </div>
 
                     </div>

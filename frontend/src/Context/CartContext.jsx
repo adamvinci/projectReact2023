@@ -13,11 +13,14 @@ const ProviderWrapper = ({ children }) => {
     const addToCart = (product) => {
         setCart(cart.concat(product));
     }
-
+    const deleteCart = () => {
+        setCart([]);
+    }
 
     const exposedValue = {
         cart,
-        addToCart
+        addToCart,
+        deleteCart
 
     };
 
