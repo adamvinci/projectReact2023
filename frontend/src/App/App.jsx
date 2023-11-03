@@ -12,9 +12,51 @@ import ProductList from "../ProductList/ProductList"
 import Payement from "../Stripe/Payement"
 import { Context as CartContext } from '../Context/CartContext'
 import { useContext } from "react"
+import Subscriptions from "../Subscriptions/Subscriptions"
+import { loadStripe } from '@stripe/stripe-js'
+
 
 
 const App = () => {
+  const stripePromise = loadStripe('pk_test_51O01aOEONY60N7cXZ2Tv3VRJRvu8GAGxCUSxxfSCjh6taMNQirvyohrViErfR3t8FHuDRmKls9HxXaawDtP7DG5900HrBloJf5')
+  const subscriptions = [
+    {
+      id: "A1",
+      name: "sportship member",
+      description: "subscirption t become a memeber of the VinciGym",
+      "images": [
+        "sport.jpg"
+      ],
+      tarifs: [{
+          name: "basic",
+          price: 25,
+          avantages:[
+            "acces gym",
+           ],
+          "image": "sport_basic.jpg"
+        },
+      {
+        name: "premium",
+        price: 39,
+        avantages:[
+          "access spa",
+          "pro coatching",
+          "parking",
+        ],
+        "image": "sport_premium.jpg"
+      },
+      {
+       name: "expert",
+       price: 60,
+       avantages:[
+        "nutrition coach"
+       ],
+       "image": "sport_expert.jpg"
+      }
+    ]
+      
+    }
+  ]
 
   const products = [
     {
@@ -79,7 +121,8 @@ const App = () => {
         "laptopcase1.png",
         "laptopcase2.png"
       ],
-    }
+    },
+    
   ];
 
 
@@ -91,6 +134,12 @@ const App = () => {
     ? products.find(note => note.id === Number(match.params.id))
     : null
 
+
+  const matchSubscription = useMatch('/subscriptions/:id')
+  const subscription = matchSubscription
+    ? subscriptions.find(s => s.id === matchSubscription.params.id)
+    : null
+  
   const matchPayement = useMatch('/payement')
   const { cart } = useContext(CartContext);
   const price = matchPayement ? cart.reduce((total, product) => total + product.price, 0) : 0;
@@ -101,8 +150,9 @@ const App = () => {
       </div>
       <div>
         <Routes>
-          <Route path="/" element={<ProductList products={products} />} />
+          <Route path="/" element={<ProductList products={products} subscriptions={subscriptions} />} />
           <Route path="/products/:id" element={<Product product={product} />} />
+          <Route path="/subscriptions/:id" element={<Subscriptions subscription={subscription} />} />
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/payement" element={<Payement price={price} />}></Route>
         </Routes>

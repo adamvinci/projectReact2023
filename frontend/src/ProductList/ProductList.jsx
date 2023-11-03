@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-const ProductList = ({ products }) => {
+const ProductList = ({ products, subscriptions }) => {
     return (
         <div className="container">
             <div className="card">
@@ -15,6 +15,23 @@ const ProductList = ({ products }) => {
                                 </div>
                                 <span>{content.name}</span>
 
+
+                            </div>
+                        </li>
+                    ))}
+
+                </ul>
+                <h4>Subscriptions </h4> 
+                <hr />
+                <ul className="bags">
+                    {subscriptions.map(content => (
+                        <li key={content.id}>
+                            <div className="bag_box">
+                                <div className="box1">
+                                    <Link to={`/subscriptions/${content.id}`}><img src={`./src/img/${content.images[0]}`} /></Link>
+                                </div>
+                                <span>{content.name}</span>
+ 
 
                             </div>
                         </li>
