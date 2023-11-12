@@ -3,11 +3,11 @@ require("dotenv").config();
 const fastify = require("fastify")({ logger: true });
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-// KLARNA credential 
+// KLARNA credential
 const klarnaCredentials = {
   uid: process.env.KLARNA_UID,
   password: process.env.KLARNA_PASSWORD,
-}
+};
 
 // KLARNA create session
 fastify.post("/create-session-klarna", async (request, reply) => {
@@ -28,25 +28,26 @@ fastify.post("/create-session-klarna", async (request, reply) => {
 });
 
 // Klarna order
-fastify.post("/place-order-klarna/:authorizationToken", async (request, reply) => {
-  const { authorizationToken } = request.params;
-  try {
-    const response = await fastify.post(
-      `https://api.klarna.com/payments/v1/authorizations/${authorizationToken}/order`,
-      request.body,
-      {
-        auth: klarnaCredentials,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    reply.json(response.data);
-  } catch (error) {
-    console.error("Error placing Klarna order:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+fastify.post(
+  "/place-order-klarna/:authorizationToken",
+  async (request, reply) => {
+    const { authorizationToken } = request.params;
+    try {
+      const response = await fastify.post(
+        `https://api.klarna.com/payments/v1/authorizations/${authorizationToken}/order`,
+        request.body,
+        {
+          auth: klarnaCredentials,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      reply.json(response.data);
+    } catch (error) {
+      console.error("Error placing Klarna order:", error);
+      reply.status(500).json({ error: "Internal Server Error" });
+    }
   }
-});
-
-
+);
 
 // Fetch the publishable key to initialize Stripe.js
 fastify.get("/publishable-key", () => {

@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
-import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import './Payement.css'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import React, { useState } from "react";
+import {
+  useStripe,
+  useElements,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
+import "./Payement.css";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const CheckoutForm = () => {
-  const MySwal = withReactContent(Swal)
+  const MySwal = withReactContent(Swal);
   const stripe = useStripe();
   const elements = useElements();
 
@@ -25,9 +30,7 @@ const CheckoutForm = () => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-
-        return_url: 'http://localhost:4242/cart',
-
+        return_url: "http://localhost:4242/cart",
       },
     });
 
@@ -45,20 +48,19 @@ const CheckoutForm = () => {
 
   return (
     <div id="stripe">
-      <div id="form"><form onSubmit={handleSubmit}>
-        <PaymentElement />
-        <div id="bouton">
-          <button disabled={!stripe}>Submit</button>
-        </div>
+      <div id="form">
+        <form onSubmit={handleSubmit}>
+          <PaymentElement />
+          <div id="bouton">
+            <button disabled={!stripe}>Submit</button>
+          </div>
 
-        {/* Show error message to your customers */}
-        {errorMessage && <div>{errorMessage}</div>}
-      </form>
+          {/* Show error message to your customers */}
+          {errorMessage && <div>{errorMessage}</div>}
+        </form>
       </div>
-
     </div>
-
-  )
+  );
 };
 
 export default CheckoutForm;
