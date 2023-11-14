@@ -4,7 +4,7 @@ body {
     border: 0;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
 
 * {
     margin: 0;
@@ -109,4 +109,9 @@ body {
 
 .dis-price {
     text-decoration: line-through
+}
+
+.grille-tarifaire {
+    background-color: aqua;
+    padding-left: 15%;
 }

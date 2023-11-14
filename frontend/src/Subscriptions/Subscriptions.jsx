@@ -3,13 +3,13 @@ import Stack from 'react-bootstrap/Stack';
 
 
 const Subscription = ({subscription}) => {
-    console.log(subscription.tarifs)
+
     
     return (
-        <div className='grille-tarifiaire' >
+        <div className='grille-tarifaire' >
             <Stack direction="horizontal" gap={1}>
                 {subscription.tarifs.map(tarif => (
-                    <Prices tarif={tarif} />
+                    <Prices key={tarif} tarif={tarif} />
                 ))}
             </Stack>           
         </div>

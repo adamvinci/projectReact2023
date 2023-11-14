@@ -11,6 +11,7 @@ const initStripe = async () => {
   return loadStripe(publishableKey);
 };
 
+
 const Checkout = ({ price }) => {
 
   const stripePromise = initStripe();
@@ -51,5 +52,6 @@ const Checkout = ({ price }) => {
     </div>
   );
 };
+
 
 export default Checkout;
