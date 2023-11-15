@@ -12,7 +12,15 @@ const initStripe = async () => {
 
 const Checkout = ({ price }) => {
   const stripePromise = initStripe();
+  const [clientSecretSettings, setClientSecretSettings] = useState({
+    clientSecret: "",
+    loading: true,
+  });
 
+  const [clientSecretKlarna, setClientSecretKlarna] = useState({
+    clientToken: "",
+    loading: true,
+  });
   //call to api to get clientsecret
   const getKlarnaClientSecret = async () => {
     const data = await fetch("/api/create-klarna-session", {
@@ -53,30 +61,19 @@ const Checkout = ({ price }) => {
   };
 
   getKlarnaClientSecret();
-
-  const [clientSecretSettings, setClientSecretSettings] = useState({
-    clientSecret: "",
-    loading: true,
-  });
-
-  const [clientSecretKlarna, setClientSecretKlarna] = useState({
-    clientToken: "",
-    loading: true,
+  // Initialize Klarna once the script is loaded
+  Klarna.Payments.init({
+    client_token: clientSecretKlarna.clientToken,
   });
 
   useEffect(() => {
     // Load Klarna script
+    /*
     const script = document.createElement("script");
     script.src = "https://x.klarnacdn.net/kp/lib/v1/api.js";
     script.async = true;
     document.body.appendChild(script);
-
-    script.onload = () => {
-      // Initialize Klarna once the script is loaded
-      Klarna.Payments.init({
-        client_token: clientSecretKlarna.clientToken,
-      });
-    };
+    */
 
     // Cleanup: Remove the script from the document when the component unmounts
     return () => {
@@ -100,7 +97,6 @@ const Checkout = ({ price }) => {
   // Load Klarna payment methods into container
   Klarna.Payments.load({
     container: "#klarna_container",
-    payment_method_category: paymentMethodCategory,
   });
 
   useEffect(() => {
