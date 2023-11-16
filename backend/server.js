@@ -18,6 +18,7 @@ const klarnaCredentials = base64.encode(
 );
 
 // create Klarna session
+/*
 fastify.post("/create-klarna-session", async (req, res) => {
   //const { price } = req.body;
   //console.log(price);
@@ -34,6 +35,47 @@ fastify.post("/create-klarna-session", async (req, res) => {
   } catch (error) {
     console.error("Error creating Klarna session:", error);
     res.status(500).send("Internal Server Error");
+  }
+});
+*/
+fastify.post("/create-klarna-session", async (req, res) => {
+  //const { price } = req.body;
+  //console.log(price);
+  try {
+    const response = await axios.post(
+      "https://api.playground.klarna.com/payments/v1/sessions",
+      {
+        intent: "buy",
+        purchase_country: "BE",
+        purchase_currency: "EUR",
+        locale: "en-US",
+        order_amount: 10,
+        order_tax_amount: 0,
+        order_lines: [
+          {
+            name: "vinciShop",
+            unit_price: 4,
+            quantity: 2,
+            total_amount: 10,
+          },
+        ],
+      },
+      {
+        headers: {
+          Authorization: `Basic ${klarnaCredentials}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const responseData = response.data;
+    console.log(responseData);
+    res.send({
+      responseData,
+    });
+  } catch (error) {
+    console.error("Error creating Klarna session:", error.message);
+    reply.status(500).send("Internal Server Error");
   }
 });
 

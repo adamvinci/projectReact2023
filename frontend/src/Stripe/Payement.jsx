@@ -19,6 +19,8 @@ const Checkout = ({ price }) => {
 
   const [clientSecretKlarna, setClientSecretKlarna] = useState("");
   //call to api to get clientsecret
+
+  /*
   const getKlarnaClientSecret = async () => {
     try {
       const data = await fetch("/api/create-klarna-session", {
@@ -58,10 +60,60 @@ const Checkout = ({ price }) => {
 
     setClientSecretKlarna(client_token);
   };
+  */
+
+  const getKlarnaClientSecret = async () => {
+    const data = await fetch("/api/create-klarna-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        intent: "buy",
+        purchase_country: "BE",
+        purchase_currency: "EUR",
+        locale: "fr-BE",
+        order_amount: 1,
+        order_tax_amount: 0,
+        order_lines: [
+          {
+            type: "physical",
+            //reference: "",
+            name: "clothes",
+            quantity: 1,
+            unit_price: 1,
+            tax_rate: 0,
+            total_amount: `${price}`,
+            total_discount_amount: 0,
+            total_tax_amount: 0,
+            //image_url: "https://www.exampleobjects.com/logo.png",
+            //product_url: "https://www.estore.com/products/f2a8d7e34",
+          },
+        ],
+      }),
+    });
+    const response = await data.json();
+    const client_token = response.responseData.client_token;
+
+    setClientSecretKlarna(client_token);
+  };
+  useEffect(() => {
+    getKlarnaClientSecret();
+    createPaymentIntent();
+  }, []);
+  console.log(clientSecretKlarna);
+
+  if (clientSecretKlarna) {
+    Klarna.Payments.init({
+      client_token: clientSecretKlarna,
+    });
+    Klarna.Payments.load({
+      container: "#klarna_container",
+    });
+  }
 
   // Initialize Klarna Payments
   //Klarna.Payments.init({ client_token: clientSecretKlarna });
   // Load Klarna payment methods into container
+  /*
   useEffect(() => {
     Klarna.Payments.init({
       client_token: clientSecretKlarna.clientToken,
@@ -73,6 +125,7 @@ const Checkout = ({ price }) => {
   useEffect(() => {
     getKlarnaClientSecret();
   }, []);
+  */
 
   /*
   useEffect(() => {
