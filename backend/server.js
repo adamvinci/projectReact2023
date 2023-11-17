@@ -84,16 +84,30 @@ fastify.post("/place-klarna-order/:authorizationToken", async (req, res) => {
   const { authorizationToken } = req.params;
   try {
     const response = await axios.post(
-      `${klarnaApiUrl}/payments/v1/authorizations/${authorizationToken}/order`,
-      req.body,
+      `https://api.playground.klarna.com/payments/v1/authorizations/${authorizationToken}/order`,
       {
-        auth: klarnaCredentials,
-        headers: { "Content-Type": "application/json" },
-      }
+        purchase_country: "BE",
+        purchase_currency: "EUR",
+        order_amount: 10,
+        order_lines: [
+          {
+            name: "vinciShop",
+            unit_price: 4,
+            quantity: 2,
+            total_amount: 10,
+          },
+        ],
+      }, {
+      headers: {
+        Authorization: `Basic ${klarnaCredentials}`,
+        "Content-Type": "application/json",
+      },
+    }
     );
-    res.json(response.data);
+    console.log(response.data)
+    res.send(response.data);
   } catch (error) {
-    console.error("Error placing Klarna order:", error);
+    console.error("Error placing Klarna order:", error.response.data);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
