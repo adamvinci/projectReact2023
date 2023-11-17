@@ -43,7 +43,7 @@ const Cart = () => {
     });
     return totalprice;
   };
-  const checkoutHandler = () => {
+  const checkoutHandler = async () => {
     const price = calculateTotalPrice();
     if (price == 0) {
       MySwal.fire({
@@ -52,9 +52,25 @@ const Cart = () => {
         text: "You need to have products in your cart to proceed with the purchase",
       });
     } else {
-      navigate("/payement");
+      const result = await MySwal.fire({
+        title: "Choose Payment Method",
+        showCancelButton: true,
+        confirmButtonText: "Stripe",
+        cancelButtonText: "Klarna",
+        reverseButtons: true,
+        icon: "question",
+      });
+
+      if (result.isConfirmed) {
+        // User chose Stripe
+        navigate("/payement");
+      } else {
+        // User chose Klarna
+        navigate("/klarna");
+      }
     }
   };
+
   return (
     <div className="container">
       <div className="row">
