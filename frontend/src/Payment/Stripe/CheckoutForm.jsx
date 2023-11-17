@@ -1,23 +1,8 @@
-<<<<<<< HEAD:frontend/src/Stripe/CheckoutForm.jsx
 import React, { useState } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import './Payement.css'
 
 const CheckoutForm = () => {
-=======
-import React, { useState } from "react";
-import {
-  useStripe,
-  useElements,
-  PaymentElement,
-} from "@stripe/react-stripe-js";
-import "./Stripe/Payement.css";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-
-const CheckoutForm = () => {
-  const MySwal = withReactContent(Swal);
->>>>>>> c22bbde98f656919f8433b3a8c29be3197a5611c:frontend/src/Payment/CheckoutForm.jsx
   const stripe = useStripe();
   const elements = useElements();
 

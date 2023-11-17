@@ -40,7 +40,6 @@ const CheckoutKlarna = ({ price }) => {
   useEffect(() => {
     getKlarnaClientSecret();
   }, []);
-  console.log(clientSecretKlarna);
 
   if (clientSecretKlarna) {
     Klarna.Payments.init({
@@ -48,65 +47,58 @@ const CheckoutKlarna = ({ price }) => {
     });
     Klarna.Payments.load({
       container: "#klarna_container",
+      payment_method_categories: '',
     });
-    // Authorize payment with Klarna
-    Klarna.Payments.authorize(
-      {
-        payment_method_categories: {
-          payment_method_categories: "pay now",
-          auto_finalize: false,
-        },
-        purchase_country: "BE",
-        purchase_currency: "EUR",
-        locale: "FR-BE",
-        billing_address: {
-          given_name: "lambda",
-          family_name: "lambda",
-          email: "lambda@google.com",
-          title: "Mr",
-          street_address: "lambda",
-          street_address2: "lambda",
-          postal_code: "90210",
-          city: "lambda",
-          region: "BXL",
-          phone: "0000000",
-          country: "BE",
-        },
-        order_amount: `${price}`,
-        order_tax_amount: 0,
-        order_lines: [
-          {
-            type: "physical",
-            reference: "19-402-USA",
-            name: "Battery Power Pack",
-            quantity: 1,
-            unit_price: `${price}`,
-            tax_rate: 0,
-            total_amount: 10,
-            total_discount_amount: 0,
-            total_tax_amount: 0,
-            product_url: "https://www.estore.com/products/f2a8d7e34",
-            image_url: "https://www.exampleobjects.com/logo.png",
-          },
-        ],
-        customer: {
-          date_of_birth: "1970-01-01",
-        },
-      },
-      function (res) {
-        console.log(res);
-      }
-    );
-    Klarna.Payments.finalize(
-      { payment_method_category: "pay_now" },
-      {},
-      function (res) {}
-    );
-  }
 
+  }
+  const authorizeHandler = () => {
+    if (clientSecretKlarna) {
+      Klarna.Payments.authorize({
+        payment_method_categories: '',
+        billing_address: {
+          given_name: "John",
+          family_name: "Doe",
+          email: "john@doe.com",
+          title: "Mr",
+          street_address: "512 City Park Ave",
+          postal_code: "43215",
+          city: "Columbus",
+          region: "oh",
+          phone: "6142607295",
+          country: "US"
+        },
+        order_amount: 2000,
+        order_tax_amount: 0,
+        order_lines: [{
+          type: "physical",
+          reference: "19-402-USA",
+          name: "Battery Power Pack",
+          quantity: 1,
+          unit_price: 10,
+          tax_rate: 0,
+          total_amount: 10,
+          total_discount_amount: 0,
+          total_tax_amount: 0,
+        }],
+      }, function (res) {
+        console.log(res);
+      })
+    }
+    // Authorize payment with Klarna
+
+  }
+  /* Klarna.Payments.finalize(
+     { payment_method_category: "pay_now" },
+     {},
+     function (res) { }
+   );*/
   return (
     <div>
-      <div id="klarna_container"></div>
+      <div id="klarna_container">
+
+
+      </div>
+      <div id="boutonKlarna"> <button onClick={() => authorizeHandler()}>Buy</button></div>
     </div>
   );
 };

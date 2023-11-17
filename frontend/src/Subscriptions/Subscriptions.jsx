@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import CheckoutForm from '../Stripe/CheckoutForm.jsx';
+import CheckoutForm from '../Payment/Stripe/CheckoutForm.jsx';
 
 const initStripe = async () => {
     const res = await axios.get("/api/publishable-key");

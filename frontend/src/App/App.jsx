@@ -2,7 +2,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-<<<<<<< HEAD
   useMatch
 } from "react-router-dom"
 import Footer from '../Footer/Footer'
@@ -10,32 +9,17 @@ import Product from '../Product/Product'
 import Cart from '../Cart/Cart'
 import Header from '../Header/Header'
 import ProductList from "../ProductList/ProductList"
-import Payement from "../Stripe/Payement"
+import Payement from "../Payment/Stripe/Payement"
 import { Context as CartContext } from '../Context/CartContext'
 import { useContext } from "react"
 import Subscriptions from "../Subscriptions/Subscriptions"
-
-
-
-const App = () => {
-
-
-
-=======
-  useMatch,
-} from "react-router-dom";
-import Footer from "../Footer/Footer";
-import Product from "../Product/Product";
-import Cart from "../Cart/Cart";
-import Header from "../Header/Header";
-import ProductList from "../ProductList/ProductList";
-import Payement from "../Payment/Stripe/Payement";
 import KlarnaPayment from "../Payment/Klarna/KlarnaPayment";
-import { Context as CartContext } from "../Context/CartContext";
-import { useContext } from "react";
+
 
 const App = () => {
->>>>>>> c22bbde98f656919f8433b3a8c29be3197a5611c
+
+
+
   const products = [
     {
       id: 1,
@@ -82,24 +66,12 @@ const App = () => {
     },
     {
       id: 6,
-<<<<<<< HEAD
-      name: 'laptopcase',
-      description: "Protect your valuable tech gear in style with our sleek Computer Case. Designed to fit most laptops securely, it features a modern look and durable construction to keep your device safe.",
-      price: 4.00,
-      "images": [
-        "laptopcase1.png",
-        "laptopcase2.png"
-      ],
-    },
-
-=======
       name: "laptopcase",
       description:
         "Protect your valuable tech gear in style with our sleek Computer Case. Designed to fit most laptops securely, it features a modern look and durable construction to keep your device safe.",
       price: 4.0,
       images: ["laptopcase1.png", "laptopcase2.png"],
     },
->>>>>>> c22bbde98f656919f8433b3a8c29be3197a5611c
   ];
 
   const padding = {
@@ -110,13 +82,7 @@ const App = () => {
     ? products.find((note) => note.id === Number(match.params.id))
     : null;
 
-<<<<<<< HEAD
-
-
-  const matchPayement = useMatch('/payement')
-=======
   const matchPayement = useMatch("/payement");
->>>>>>> c22bbde98f656919f8433b3a8c29be3197a5611c
   const { cart } = useContext(CartContext);
   const price = matchPayement
     ? cart.reduce((total, product) => total + product.price, 0)
