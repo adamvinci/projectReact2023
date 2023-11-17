@@ -20,6 +20,7 @@ const Header = () => {
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/">Products</Nav.Link>
                         <Nav.Link as={Link} to="/cart">Cart<ShoppingCartOutlined /></Nav.Link>
+                        <Nav.Link as={Link} to="/subscriptions">Subscription</Nav.Link>
 
                     </Nav>
                 </Container>

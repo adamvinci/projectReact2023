@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import './Payement.css'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+
 const CheckoutForm = () => {
-  const MySwal = withReactContent(Swal)
   const stripe = useStripe();
   const elements = useElements();
 
