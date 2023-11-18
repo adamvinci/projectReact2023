@@ -87,6 +87,10 @@ const App = () => {
   const price = matchPayement
     ? cart.reduce((total, product) => total + product.price, 0)
     : 0;
+   const matchPayementKlarna = useMatch("/klarna");
+  const priceKlarna = matchPayementKlarna
+    ? cart.reduce((total, product) => total + product.price, 0)
+    : 0;
   return (
     <div>
       <div>
@@ -99,7 +103,7 @@ const App = () => {
           <Route path="/subscriptions" element={<Subscriptions />} />
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/payement" element={<Payement price={price} />}></Route>
-          <Route path="/klarna" element={<KlarnaPayment price={price} />}>
+          <Route path="/klarna" element={<KlarnaPayment priceKlarna={priceKlarna} />}>
             {" "}
           </Route>
         </Routes>
