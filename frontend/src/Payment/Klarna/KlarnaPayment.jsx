@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const CheckoutKlarna = ({ price }) => {
   const navigate = useNavigate();
   const [clientSecretKlarna, setClientSecretKlarna] = useState("");
-
+  const price = priceKlarna
   const getKlarnaClientSecret = async () => {
     const response = await axios.post("/api/create-klarna-session", {price});
     const client_token = response.data.responseData.client_token;
