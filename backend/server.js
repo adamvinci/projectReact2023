@@ -20,7 +20,7 @@ const klarnaCredentials = base64.encode(
 // create Klarna session
 /*
 fastify.post("/create-klarna-session", async (req, res) => {
-  //const { price } = req.body;
+  const { price } = req.body;
   //console.log(price);
   try {
     const response = await axios.post(
@@ -39,7 +39,7 @@ fastify.post("/create-klarna-session", async (req, res) => {
 });
 */
 fastify.post("/create-klarna-session", async (req, res) => {
-  //const { price } = req.body;
+ const price = req.body.price * 100;
   //console.log(price);
   try {
     const response = await axios.post(
@@ -49,14 +49,14 @@ fastify.post("/create-klarna-session", async (req, res) => {
         purchase_country: "BE",
         purchase_currency: "EUR",
         locale: "en-US",
-        order_amount: 10,
+        order_amount: price,
         order_tax_amount: 0,
         order_lines: [
           {
             name: "vinciShop",
-            unit_price: 4,
-            quantity: 2,
-            total_amount: 10,
+            unit_price: price,
+            quantity: 1,
+            total_amount: price,
           },
         ],
       },
@@ -82,19 +82,20 @@ fastify.post("/create-klarna-session", async (req, res) => {
 //  place Klarna order
 fastify.post("/place-klarna-order/:authorizationToken", async (req, res) => {
   const { authorizationToken } = req.params;
+  const price = req.body.price * 100;
   try {
     const response = await axios.post(
       `https://api.playground.klarna.com/payments/v1/authorizations/${authorizationToken}/order`,
       {
         purchase_country: "BE",
         purchase_currency: "EUR",
-        order_amount: 10,
+        order_amount: price,
         order_lines: [
           {
             name: "vinciShop",
-            unit_price: 4,
-            quantity: 2,
-            total_amount: 10,
+            unit_price: price,
+            quantity: 1,
+            total_amount: price,
           },
         ],
       }, {
