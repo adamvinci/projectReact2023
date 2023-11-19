@@ -56,8 +56,6 @@ const CheckoutKlarna = ({ priceKlarna }) => {
   return (
     <div>
       <div id="klarna_container">
-
-
       </div>
       <div id="boutonKlarna"> <button onClick={() => authorizeHandler()}>Buy</button></div>
     </div>

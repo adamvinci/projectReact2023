@@ -14,7 +14,7 @@ const klarnacreds = {
 const klarnaCredentials = base64.encode(
   `${klarnacreds.uid}:${klarnacreds.password}`
 );
-
+//create clarna session
 fastify.post("/create-klarna-session", async (req, res) => {
   const price = req.body.price * 100;
   try {
