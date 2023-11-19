@@ -1,8 +1,117 @@
 require("dotenv").config();
+const axios = require("axios");
+const base64 = require("base-64");
 
 // Require the framework and instantiate it
 const fastify = require("fastify")({ logger: true });
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+const klarnaApiUrl = "https://api.playground.klarna.com";
+
+// KLARNA credential
+const klarnacreds = {
+  uid: process.env.KLARNA_UID,
+  password: process.env.KLARNA_PASSWORD,
+};
+const klarnaCredentials = base64.encode(
+  `${klarnacreds.uid}:${klarnacreds.password}`
+);
+
+// create Klarna session
+/*
+fastify.post("/create-klarna-session", async (req, res) => {
+  const { price } = req.body;
+  //console.log(price);
+  try {
+    const response = await axios.post(
+      `${klarnaApiUrl}/payments/v1/sessions`,
+      req.body,
+      {
+        auth: klarnaCredentials,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error creating Klarna session:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+*/
+fastify.post("/create-klarna-session", async (req, res) => {
+ const price = req.body.price * 100;
+  //console.log(price);
+  try {
+    const response = await axios.post(
+      "https://api.playground.klarna.com/payments/v1/sessions",
+      {
+        intent: "buy",
+        purchase_country: "BE",
+        purchase_currency: "EUR",
+        locale: "en-US",
+        order_amount: price,
+        order_tax_amount: 0,
+        order_lines: [
+          {
+            name: "vinciShop",
+            unit_price: price,
+            quantity: 1,
+            total_amount: price,
+          },
+        ],
+      },
+      {
+        headers: {
+          Authorization: `Basic ${klarnaCredentials}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const responseData = response.data;
+    console.log(responseData);
+    res.send({
+      responseData,
+    });
+  } catch (error) {
+    console.error("Error creating Klarna session:", error.message);
+    reply.status(500).send("Internal Server Error");
+  }
+});
+
+//  place Klarna order
+fastify.post("/place-klarna-order/:authorizationToken", async (req, res) => {
+  const { authorizationToken } = req.params;
+  const price = req.body.price * 100;
+  try {
+    const response = await axios.post(
+      `https://api.playground.klarna.com/payments/v1/authorizations/${authorizationToken}/order`,
+      {
+        purchase_country: "BE",
+        purchase_currency: "EUR",
+        order_amount: price,
+        order_lines: [
+          {
+            name: "vinciShop",
+            unit_price: price,
+            quantity: 1,
+            total_amount: price,
+          },
+        ],
+      }, {
+      headers: {
+        Authorization: `Basic ${klarnaCredentials}`,
+        "Content-Type": "application/json",
+      },
+    }
+    );
+    console.log(response.data)
+    res.send(response.data);
+  } catch (error) {
+    console.error("Error placing Klarna order:", error.response.data);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 // Fetch the publishable key to initialize Stripe.js
 fastify.get("/publishable-key", () => {
@@ -21,6 +130,8 @@ fastify.post("/create-payment-intent", async (request) => {
 
   return { client_secret: paymentIntent.client_secret };
 });
+
+
 // SUBSCRIPTION
 fastify.get('/config', async (req, res) => {
   try {
@@ -88,8 +199,6 @@ fastify.post('/create-subscription', async (req, res) => {
     return res.status(400).send({ error: { message: error.message } });
   }
 });
-
-
 
 // Run the server
 const start = async () => {
