@@ -6,8 +6,6 @@ const base64 = require("base-64");
 const fastify = require("fastify")({ logger: true });
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-const klarnaApiUrl = "https://api.playground.klarna.com";
-
 // KLARNA credential
 const klarnacreds = {
   uid: process.env.KLARNA_UID,
@@ -17,30 +15,8 @@ const klarnaCredentials = base64.encode(
   `${klarnacreds.uid}:${klarnacreds.password}`
 );
 
-// create Klarna session
-/*
 fastify.post("/create-klarna-session", async (req, res) => {
-  const { price } = req.body;
-  //console.log(price);
-  try {
-    const response = await axios.post(
-      `${klarnaApiUrl}/payments/v1/sessions`,
-      req.body,
-      {
-        auth: klarnaCredentials,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    res.json(response.data);
-  } catch (error) {
-    console.error("Error creating Klarna session:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-*/
-fastify.post("/create-klarna-session", async (req, res) => {
- const price = req.body.price * 100;
-  //console.log(price);
+  const price = req.body.price * 100;
   try {
     const response = await axios.post(
       "https://api.playground.klarna.com/payments/v1/sessions",
@@ -69,7 +45,6 @@ fastify.post("/create-klarna-session", async (req, res) => {
     );
 
     const responseData = response.data;
-    console.log(responseData);
     res.send({
       responseData,
     });
@@ -105,7 +80,6 @@ fastify.post("/place-klarna-order/:authorizationToken", async (req, res) => {
       },
     }
     );
-    console.log(response.data)
     res.send(response.data);
   } catch (error) {
     console.error("Error placing Klarna order:", error.response.data);
