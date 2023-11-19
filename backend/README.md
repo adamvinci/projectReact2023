@@ -12,7 +12,7 @@ An [Express server](http://expressjs.com) implementation
 1. Confirm `.env` configuration
 
 Ensure the API keys are configured in `.env` in this directory. It should include the following keys:
-# Stripe API keys - see https://stripe.com/docs/development/quickstart#api-keys
+
 STRIPE_PUBLISHABLE_KEY=pk_test...
 STRIPE_SECRET_KEY=sk_test...
 KLARNA_UID=..
