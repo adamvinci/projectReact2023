@@ -12,7 +12,6 @@ npm run dev / npm start
 ```
 
 2. This frontend will be running on `localhost:4242`
-
 # Credits
 Chemin du fichier où se trouve le code réutilisé : ./src/Payment/Stripe
 Auteur du code source réutilisé : matthewling
