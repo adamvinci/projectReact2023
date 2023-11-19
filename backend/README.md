@@ -26,3 +26,9 @@ npm start
 ```
 
 3. This backend will be running on `localhost:5252`
+
+4. Chemin du fichier où se trouve le code réutilisé : ./server.js
+Auteur du code source réutilisé : matthewling
+URL où le code réutilisé est disponible: https://github.com/matthewling-stripe/vite-react-stripe/blob/main/server.js
+Raison de la réutilisation du code: creation session de payement stripe
+
